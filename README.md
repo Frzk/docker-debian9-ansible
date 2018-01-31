@@ -1,5 +1,7 @@
 # Debian 9 (Stretch) Ansible test image
 
+![Build Status](https://img.shields.io/docker/build/kblr/debian9-ansible.svg) ![Automated](https://img.shields.io/docker/automated/kblr/debian9-ansible.svg) ![Pulls](https://img.shields.io/docker/pulls/kblr/debian9-ansible.svg) ![Stars](https://img.shields.io/docker/stars/kblr/debian9-ansible.svg)
+
 Debian 9 (Stretch) Docker image for Ansible role testing in Travis-CI.
 
 > TL;DR: `docker pull kblr/debian9-ansible`
