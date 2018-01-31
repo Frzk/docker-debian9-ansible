@@ -2,24 +2,23 @@
 
 Debian 9 (Stretch) Docker image for Ansible role testing in Travis-CI.
 
+> TL;DR: `docker pull kblr/debian9-ansible`
+
+
 ## Overview
 
 I use Docker in Travis-CI to test my Ansible roles on multiple OS.
 
-This repo allows me to (automatically) build a Debian 9 (Stretch) image from the provided `Dockerfile`. This image contains the needed tools to run Ansible and the tests.
+This repo allows me to (automatically) build a Debian 9 image from the provided `Dockerfile`. This image contains the needed tools to run Ansible and the tests.
 
 The image is built by Docker Hub automatically each time one of the following happens:
 - the upstream OS container is updated;
 - a commit is made on the `master` branch of this repo.
 
-> **Important Note**: the Docker image is named **kblr/debian9-ansible**.
-
-Travis pulls the image from Docker Hub, run a container based on it and run my tests.
-
 
 ## How-to use with Travis-CI
 
-Simply pull the image from Docker Hub and run a container based on it.
+Simply tell Travis to pull the image from Docker Hub and run a container based on it.
 
 Your `.travis.yml` file should look like this:
 
@@ -53,8 +52,8 @@ notifications:
 
 If you ever need to build the image manually:
 
-  1. [Install Docker](https://docs.docker.com/engine/installation/);
-  2. `git clone` this repo;
+  1. [Install Docker](https://docs.docker.com/engine/installation/)
+  2. `git clone` this repo
   3. `cd` in the freshly cloned repo
   4. Build the image using `docker build --no-cache --rm --tag="debian9:ansible" .`
   5. `cd` in your Ansible role directory
@@ -63,4 +62,4 @@ If you ever need to build the image manually:
 
 ## Contributing
 
-Code reviews, patches, comments, bug reports and feature requests are welcome. Please read the [Contributing Guide](https://github.com/Frzk/docker-debian9-ansible/blob/master/CONTRIBUTING.md) for further details.
+Code reviews, patches, comments, bug reports and feature requests are welcome. Please read the [Contributing Guide](CONTRIBUTING.md) for further details.
