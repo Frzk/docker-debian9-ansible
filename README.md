@@ -1,2 +1,66 @@
-# docker-debian9-ansible
+# Debian 9 (Stretch) Ansible test image
+
 Debian 9 (Stretch) Docker image for Ansible role testing in Travis-CI.
+
+## Overview
+
+I use Docker in Travis-CI to test my Ansible roles on multiple OS.
+
+This repo allows me to (automatically) build a Debian 9 (Stretch) image from the provided `Dockerfile`. This image contains the needed tools to run Ansible and the tests.
+
+The image is built by Docker Hub automatically each time one of the following happens:
+- the upstream OS container is updated;
+- a commit is made on the `master` branch of this repo.
+
+> **Important Note**: the Docker image is named **kblr/debian9-ansible**.
+
+Travis pulls the image from Docker Hub, run a container based on it and run my tests.
+
+
+## How-to use with Travis-CI
+
+Simply pull the image from Docker Hub and run a container based on it.
+
+Your `.travis.yml` file should look like this:
+
+```yaml
+sudo: required
+language: bash
+services:
+  - docker
+
+before_install:
+  # Pull the image from Docker Hub:
+  - docker pull kblr/debian9-ansible:latest
+
+script:
+  # Run a container based on the previously pulled image:
+  - docker run --name "${TRAVIS_COMMIT}.debian9" --detach --privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro --volume="${PWD}":/etc/ansible/roles/under_test:rw "kblr/debian9-ansible:latest"
+
+  # Execute tests:
+  - docker exec "${TRAVIS_COMMIT}.debian9" env ANSIBLE_FORCE_COLOR=1 ansible-playbook -v /etc/ansible/roles/under_test/tests/test/yml --syntax-check
+  - docker exec ...
+
+after_script:
+  - docker rm -f "${TRAVIS_COMMIT}.debian9"
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
+```
+
+
+## How-to use locally
+
+If you ever need to build the image manually:
+
+  1. [Install Docker](https://docs.docker.com/engine/installation/);
+  2. `git clone` this repo;
+  3. `cd` in the freshly cloned repo
+  4. Build the image using `docker build --no-cache --rm --tag="debian9:ansible" .`
+  5. `cd` in your Ansible role directory
+  5. From there, run a container using `docker run --name [whatever] --detach --privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro --volume="${PWD}":/etc/ansible/roles/under_test:rw debian9:ansible`
+
+
+## Contributing
+
+Code reviews, patches, comments, bug reports and feature requests are welcome. Please read the [Contributing Guide](https://github.com/Frzk/docker-debian9-ansible/blob/master/CONTRIBUTING.md) for further details.
