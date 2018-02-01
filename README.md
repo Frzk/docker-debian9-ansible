@@ -43,12 +43,15 @@ script:
     --privileged
     --mount type=bind,source=/sys/fs/cgroup,target=/sys/fs/cgroup,readonly
     --mount type=bind,source="$(pwd)",target=/etc/ansible/roles/under_test,readonly
-    "kblr/debian9-ansible:latest"
+    kblr/debian9-ansible:latest
 
   # Execute tests:
-  - docker exec "${TRAVIS_COMMIT}.debian9"
+  - >
+    docker exec "${TRAVIS_COMMIT}.debian9"
     ansible-playbook -v /etc/ansible/roles/under_test/tests/test/yml --syntax-check
-  - docker exec ...
+
+  - >
+    docker exec ...
 
 after_script:
   - docker rm -f "${TRAVIS_COMMIT}.debian9"
