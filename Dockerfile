@@ -3,7 +3,8 @@
 FROM debian:9
 LABEL maintainer="François KUBLER"
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
     build-essential \
     git \
     python-pip \
@@ -19,4 +20,4 @@ RUN mkdir -p /etc/ansible \
 
 ENV ANSIBLE_FORCE_COLOR 1
 
-ENTRYPOINT ["/bin/systemd"]
+ENTRYPOINT ["/sbin/init"]
