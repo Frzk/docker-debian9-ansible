@@ -22,4 +22,4 @@ RUN mkdir -p /etc/ansible
 
 ENV ANSIBLE_FORCE_COLOR 1
 
-ENTRYPOINT ["/sbin/init"]
+ENTRYPOINT ["/lib/systemd/systemd"]
