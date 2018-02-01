@@ -36,10 +36,18 @@ before_install:
 
 script:
   # Run a container based on the previously pulled image:
-  - docker run --name "${TRAVIS_COMMIT}.debian9" --detach --privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro --volume="${PWD}":/etc/ansible/roles/under_test:rw "kblr/debian9-ansible:latest"
+  - >
+    docker run
+    --name "${TRAVIS_COMMIT}.debian9"
+    --detach
+    --privileged
+    --mount type=bind,source=/sys/fs/cgroup,target=/sys/fs/cgroup,readonly
+    --mount type=bind,source="$(pwd)",target=/etc/ansible/roles/under_test,readonly
+    "kblr/debian9-ansible:latest"
 
   # Execute tests:
-  - docker exec "${TRAVIS_COMMIT}.debian9" env ANSIBLE_FORCE_COLOR=1 ansible-playbook -v /etc/ansible/roles/under_test/tests/test/yml --syntax-check
+  - docker exec "${TRAVIS_COMMIT}.debian9"
+    ansible-playbook -v /etc/ansible/roles/under_test/tests/test/yml --syntax-check
   - docker exec ...
 
 after_script:
@@ -59,7 +67,7 @@ If you ever need to build the image manually:
   3. `cd` in the freshly cloned repo
   4. Build the image using `docker build --no-cache --rm --tag="debian9:ansible" .`
   5. `cd` in your Ansible role directory
-  5. From there, run a container using `docker run --name [whatever] --detach --privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro --volume="${PWD}":/etc/ansible/roles/under_test:rw debian9:ansible`
+  5. From there, run a container using `docker run --name [whatever] --detach --privileged --mount type=bind,source=/sys/fs/cgroup,target=/sys/fs/cgroup,readonly --mount type=bind,source="$(pwd)",target=/etc/ansible/roles/under_test,readonly debian9:ansible`
 
 
 ## Contributing
