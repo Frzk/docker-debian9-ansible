@@ -19,6 +19,7 @@ RUN pip install --upgrade setuptools \
 #  && echo "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
 
 RUN mkdir -p /etc/ansible
+ADD hosts /etc/ansible/
 
 ENV ANSIBLE_FORCE_COLOR 1
 
