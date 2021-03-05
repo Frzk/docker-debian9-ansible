@@ -13,7 +13,8 @@ RUN apt-get update \
 
 RUN pip install --upgrade setuptools \
  && pip install wheel \
- && pip install ansible
+ && pip install ansible \
+ && pip install molecule-docker
 
 # RUN mkdir -p /etc/ansible \
 #  && echo "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
