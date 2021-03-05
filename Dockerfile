@@ -7,14 +7,14 @@ RUN apt-get update \
  && apt-get install -y --no-install-recommends \
     build-essential \
     git \
-    python-pip \
+    libssl-dev \
+    python3-pip \
     systemd \
  && rm -rf /var/lib/apt/lists/*
 
-RUN pip install --upgrade setuptools \
- && pip install wheel \
- && pip install ansible \
- && pip install molecule-docker
+RUN python3 -m pip install --upgrade pip \
+ && python3 -m pip install --upgrade setuptools \
+ && python3 -m pip install wheel ansible molecule[docker,lint]
 
 # RUN mkdir -p /etc/ansible \
 #  && echo "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
